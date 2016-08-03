@@ -48,6 +48,7 @@ class HotelClient extends GuzzleClient
         $config += $defaults;
 
         $httpClient = new HttpClient($httpConfig);
+        $httpClient->setDefaultOption('verify', false);
 
         $client = new self($httpClient, $description, $config);
 
