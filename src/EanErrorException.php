@@ -26,6 +26,11 @@ class EanErrorException extends CommandException
      */
     protected $itineraryId;
 
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
     public function setHandling($handling)
     {
         $this->handling = $handling;

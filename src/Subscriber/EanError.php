@@ -38,6 +38,7 @@ class EanError implements SubscriberInterface
             $e->setCategory((string) $eanError->category);
             $e->setVerboseMessage((string) $eanError->verboseMessage);
             $e->setItineraryId((string) $eanError->itineraryId);
+            $e->setCode(400);
 
             throw $e;
         }
