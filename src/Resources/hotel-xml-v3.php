@@ -1936,6 +1936,10 @@ return [
         'ReservationResponse' => [
             'type' => 'object',
             'properties' => [
+                'windowUri' => [
+                    'location' => 'xml',
+                    'type' => 'string'
+                ],
                 'itineraryId' => [
                     'location' => 'xml',
                     'type' => 'numeric'
