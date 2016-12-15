@@ -50,8 +50,13 @@ class EanError implements SubscriberInterface
                 case 'RECOVERABLE':
                     switch ($e->getCategory()) {
                         case 'DATA_VALIDATION':
+                            $code = 400;
+                            break;
                         case 'PRICE_MISMATCH':
                             $code = 400;
+                            $e->data = (object)[
+                                'price' => 'Price has changed'
+                            ];
                             break;
                         case 'CREDITCARD':
                             $code = 491;
