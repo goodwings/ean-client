@@ -13,7 +13,7 @@ return [
                 'generalEndpoint' => [
                     'location' => 'uri',
                     'required' => true,
-                    'default' => 'http://api.ean.com'
+                    'default' => 'https://api.ean.com'
                 ],
                 'bookingEndpoint' => [
                     'location' => 'uri',
@@ -68,7 +68,7 @@ return [
         ],
         'GetHotelList' => [
             'extends' => 'AbstractOperation',
-            'httpMethod' => 'GET',
+            'httpMethod' => 'POST',
             'uri' => '{+generalEndpoint}/ean-services/rs/hotel/v3/list',
             'summary' => 'Retrieve a list of hotels by location or a list of specific hotelIds.',
             'responseModel' => 'HotelListResponse',

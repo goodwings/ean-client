@@ -51,6 +51,24 @@ class StringFilter
             '~(%3CcreditCard%3E)(.*)(%3C%2FcreditCard%3E)~is'
         ];
 
+        $pattern = [
+            '/(<creditCardType\\>)(.*)(<\\\\\\/creditCardType>)/i',
+            '/(<creditCardNumber\\>)(.*)(<\\\\\\/creditCardNumber>)/i',
+            '/(<creditCardIdentifier\\>)(.*)(<\\\\\\/creditCardIdentifier>)/i',
+            '/(<creditCardExpirationMonth\\>)(.*)(<\\\\\\/creditCardExpirationMonth>)/i',
+            '/(<creditCardExpirationYear\\>)(.*)(<\\\\\\/creditCardExpirationYear>)/i',
+            '/(\\"creditCardType\\": \"?)([^",\n]*)(")?/i',
+            '/(\\"creditCardNumber\\": \"?)([^",\n]*)(")?/i',
+            '/(\\"creditCardIdentifier\\": \"?)([^",\n]*)(")?/i',
+            '/(\\"creditCardExpirationMonth\\": \"?)([^",\n]*)(")?/i',
+            '/(\\"creditCardExpirationYear\\": \"?)([^",\n]*)(")?/i',
+            '/(%3CcreditCardType%3E)(.*)(%3C%2FcreditCardType%3E)/i',
+            '/(%3CcreditCardNumber%3E)(.*)(%3C%2FcreditCardNumber%3E)/i',
+            '/(%3CcreditCardIdentifier%3E)(.*)(%3C%2FcreditCardIdentifier%3E)/i',
+            '/(%3CcreditCardExpirationMonth%3E)(.*)(%3C%2FcreditCardExpirationMonth%3E)/i',
+            '/(%3CcreditCardExpirationYear%3E)(.*)(%3C%2FcreditCardExpirationYear%3E)/i',
+        ];
+        
         // mask details with X's
         $value = preg_replace_callback($pattern,
             function ($matches) {
@@ -62,6 +80,9 @@ class StringFilter
                         $content = str_repeat('X', $len);
                     } else {
                         $content = 'XXXX...';
+                    }
+                    if (!isset($matches[3])) {
+                        $matches[3] = '';
                     }
                     $content = $matches[1] . $content . $matches[3];
                 }

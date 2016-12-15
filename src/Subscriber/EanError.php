@@ -50,7 +50,12 @@ class EanError implements SubscriberInterface
                 case 'RECOVERABLE':
                     switch ($e->getCategory()) {
                         case 'DATA_VALIDATION':
-                        $code = 400;
+                        case 'PRICE_MISMATCH':
+                            $code = 400;
+                            break;
+                        case 'CREDITCARD':
+                            $code = 491;
+                            break;
                     }
                     break;
                 case 'UNKNOWN':
@@ -64,6 +69,9 @@ class EanError implements SubscriberInterface
             
             $e->setCode($code);
 
+            $logger = $event->getClient()->getEmitter()->listeners('self')[0][0];
+            $logger->handleEvent($event, 'error', $logger::LOG_ERROR);
+            
             throw $e;
         }
     }
