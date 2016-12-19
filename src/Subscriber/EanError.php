@@ -54,9 +54,7 @@ class EanError implements SubscriberInterface
                             break;
                         case 'PRICE_MISMATCH':
                             $code = 400;
-                            $e->data = (object)[
-                                'price' => 'Price has changed'
-                            ];
+                            Object::set($e, 'data.fields.price', 'Price has changed');
                             break;
                         case 'CREDITCARD':
                             $code = 491;
