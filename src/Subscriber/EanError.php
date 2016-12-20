@@ -5,6 +5,8 @@ namespace Otg\Ean\Subscriber;
 use GuzzleHttp\Command\Event\ProcessEvent;
 use GuzzleHttp\Event\SubscriberInterface;
 use Otg\Ean\EanErrorException;
+use Oi\Util\Object;
+use Oi\Util\String;
 
 class EanError implements SubscriberInterface
 {
@@ -44,6 +46,8 @@ class EanError implements SubscriberInterface
              * 490 - Restart booking flow
              * 491 - Agent attention required
              */
+            
+            Object::set($e, 'data.category', String::camelCase(strtolower($e->getCategory())));
             
             $code = 490;
             switch ($e->getHandling()) {
