@@ -32,6 +32,13 @@ class EanError implements SubscriberInterface
         }
 
         $eanError = $xml->EanError ?: $xml->EanWsError;
+        
+        $supplierErrorCode = null;
+        if (Object::pick($eanError, 'ErrorAttributes.errorAttributesMap.entry.key') == 'SUPPLIER_ERROR_CODE') {
+            $supplierErrorCode = Object::pick($eanError, 'ErrorAttributes.errorAttributesMap.entry.value');
+        }
+
+        $presentationMessage = Object::pick($eanError, 'presentationMessage');
 
         if ($eanError) {
             $e = new EanErrorException((string) $eanError->presentationMessage, $event->getTransaction());
@@ -47,6 +54,7 @@ class EanError implements SubscriberInterface
              * 491 - Agent attention required
              */
             
+            // Map category to data property
             Object::set($e, 'data.category', String::camelCase(strtolower($e->getCategory())));
             
             $code = 490;
@@ -55,6 +63,12 @@ class EanError implements SubscriberInterface
                     switch ($e->getCategory()) {
                         case 'DATA_VALIDATION':
                             $code = 400;
+
+                            // These seem to map to unrecoverable.soldOut
+                            if ($presentationMessage == 'We\'re sorry but we\'re unable to process your request due to an unknown error.' && in_array($supplierErrorCode, [279, 608])) {
+                                $code = 490;
+                                Object::set($e, 'data.category', 'soldOut');
+                            }
                             break;
                         case 'PRICE_MISMATCH':
                             $code = 400;
